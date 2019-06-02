@@ -50,9 +50,9 @@ public class MusicController {
         ResponseEntity responseEntity;
         try {
             musicService.getAllTrack();                                                  //get alltrack method of music service
-            responseEntity = new ResponseEntity<List<Track>>(musicService.getAllTrack(), HttpStatus.OK);
+            responseEntity = new ResponseEntity<List<Track>>(musicService.getAllTrack(), HttpStatus.FOUND);
         } catch (TrackNotFoundException trackNotFoundException) {
-            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.CONFLICT);//track not found exception caught
+            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.NOT_FOUND);//track not found exception caught
         }
 
         return responseEntity;
@@ -65,9 +65,9 @@ public class MusicController {
         ResponseEntity responseEntity;
         try {
             musicService.deleteTrack(id);                                                    //deletetrack method of musicservice
-            responseEntity = new ResponseEntity("Updated", HttpStatus.OK);
+            responseEntity = new ResponseEntity("Updated", HttpStatus.GONE);
         } catch (TrackNotFoundException trackNotFoundException) {
-            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.CONFLICT);// track not found exception caught
+            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.NOT_FOUND);// track not found exception caught
         }
         return responseEntity;
     }
@@ -79,9 +79,9 @@ public class MusicController {
     public ResponseEntity<?> findByName(@RequestBody Track track, @PathVariable String trackName) {
         ResponseEntity responseEntity;
         try {
-            responseEntity = new ResponseEntity<List<Track>>(musicService.findByName(trackName), HttpStatus.OK);
+            responseEntity = new ResponseEntity<List<Track>>(musicService.findByName(trackName), HttpStatus.FOUND);
         } catch (TrackNotFoundException trackNotFoundException) {
-            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.CONFLICT);   //track not found exception caught
+            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.NOT_FOUND);   //track not found exception caught
         }
         return responseEntity;
     }
@@ -96,7 +96,7 @@ public class MusicController {
             musicService.updateComment(track);
             responseEntity = new ResponseEntity("Updated", HttpStatus.OK);
         } catch (TrackNotFoundException trackNotFoundException) {
-            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.CONFLICT);//track not found exception caught
+            responseEntity = new ResponseEntity(trackNotFoundException.getMessage(), HttpStatus.NOT_FOUND);//track not found exception caught
         }
         return responseEntity;
     }
