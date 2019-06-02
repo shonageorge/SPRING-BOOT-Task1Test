@@ -20,12 +20,12 @@ import java.util.Optional;
 public class MusicRepositoryTest {
 
 
-@Autowired
+    @Autowired
     private MusicRepository musicRepository;
     private Track track;
+
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         track = new Track();
         track.setTrackId(1);
         track.setTrackName("Red");
@@ -34,93 +34,86 @@ public class MusicRepositoryTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
 
         musicRepository.deleteAll();
     }
 
 
-    @Test
-    public void testSaveMusic(){
+    @Test                                                                                              //test for save method
+    public void testSaveMusic() {
         musicRepository.save(track);
         Track fetchTrack = musicRepository.findById(track.getTrackId()).get();
-        Assert.assertEquals(1,fetchTrack.getTrackId());
+        Assert.assertEquals(1, fetchTrack.getTrackId());
 
     }
 
-    @Test
-    public void testSaveMusicFailure(){
-        Track testTrack = new Track(1,"Faded","Alan Walker");
-        musicRepository.save(track);
-        Track fetchMusic= musicRepository.findById(track.getTrackId()).get();
-        Assert.assertNotSame(testTrack,fetchMusic);
+    @Test                                                                                             //test for failure of save method
+    public void testSaveMusicFailure() {
+        Track track = new Track(1, "Faded", "Alan Walker");
+        Track track1 = musicRepository.save(track);
+        System.out.println(track1);
+        Track fetchMusic = musicRepository.findById(track.getTrackId()).get();
+        System.out.println(fetchMusic);
+        Assert.assertNotSame(track1, fetchMusic);
     }
 
     @Test
-    public void testGetAllMusic(){
-        Track getTrack = new Track(1,"worth it","fifth harmony");
+    public void testGetAllMusic() {                                                                    //test for find all method
+        Track getTrack = new Track(1, "worth it", "fifth harmony");
         musicRepository.save(getTrack);
 
         List<Track> list = musicRepository.findAll();
-        Assert.assertEquals("worth it",list.get(0).getTrackName());
+        Assert.assertEquals("worth it", list.get(0).getTrackName());
 
     }
 
-    @Test
-    public void testGetAllMusicFailure(){
-        Track getTrack = new Track(1,"worth it","fifth harmony");
+    @Test                                                                                               //test for failure of find all method
+    public void testGetAllMusicFailure() {
+        Track getTrack = new Track(1, "worth it", "fifth harmony");
         musicRepository.save(getTrack);
-        Assert.assertNotSame(getTrack,track);
+        Assert.assertNotSame(getTrack, track);
     }
 
-    @Test
-    public void testUpdateTrackSuccess(){
+    @Test                                                                                               //test for update
+    public void testUpdateTrackSuccess() {
         musicRepository.save(track);
         Track fetchTrack = musicRepository.findById(track.getTrackId()).get();
-        Assert.assertEquals(1,fetchTrack.getTrackId());
+        Assert.assertEquals(1, fetchTrack.getTrackId());
 
     }
 
-    @Test
-    public void testUpdateTrackFailure(){
-        Track testUser = new Track(12,"Diamonds","Rihanna");
+    @Test                                                                                                  //test for failure of update method
+    public void testUpdateTrackFailure() {
+        Track testUser = new Track(1, "Faded", "Alan Walker");
         musicRepository.save(testUser);
         Track fetchTrack = musicRepository.findById(testUser.getTrackId()).get();
-        Assert.assertNotSame(testUser,fetchTrack);
+        Assert.assertNotSame(testUser, fetchTrack);
     }
 
-    @Test
-    public void testDeleteTrack(){
-
-       musicRepository.deleteById(1);
-        Optional<Track> optional =musicRepository.findById(1);
-        System.out.println(optional);
-        Assert.assertEquals(Optional.empty(),optional);
-
-    }
-
-    @Test
-    public void testDeleteTrackFailure(){
+    @Test                                                                                                 ///test for delete by id method
+    public void testDeleteTrackFailure() {
         musicRepository.deleteById(1);
-        Assert.assertNotSame(null,track.getTrackId());
+        Assert.assertNotSame(null, track.getTrackId());
     }
 
-//    @Test
-//    public void testSearchTrack(){
-//        musicRepository.findByName("Red");
-//
-//        System.out.println(track.getTrackId());//Muzix fetchMuzix = muzixRepository.searchByName(muzix.getTrackName());
-//        Assert.assertEquals(1,track.getTrackId());
-//
-//    }
-//
-//    @Test
-//    public void testSearchTrackFailure(){
-//        //Muzix testUser = new Muzix(11,"Diamonds","Rihanna");
-//        musicRepository.findByName("Perfect");
-//        System.out.println(track.getTrackId());
-//        //Muzix fetchMuzix = muzixRepository.searchByName(muzix.getTrackName()).addAll();
-//        Assert.assertNotSame(null,track.getTrackId());
-//    }
+    @Test
+    public void testSearchTrack() {                                                                       ///test for search by name method
+        Track testUser = new Track(1, "Faded", "Alan Walker");
+        musicRepository.save(testUser);
+        List<Track> list = musicRepository.findByName("Faded");
+
+        System.out.println(list);
+        Assert.assertEquals(1, list.size());
+
+    }
+
+    @Test
+    public void testSearchTrackFailure() {
+        musicRepository.findByName("Perfect");
+        System.out.println(track.getTrackId());
+        Assert.assertNotSame(null, track.getTrackId());
+    }
+
 
 }
