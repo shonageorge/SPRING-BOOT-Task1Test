@@ -5,6 +5,7 @@ import com.stackroute.muzix.exception.TrackNotFoundException;
 import com.stackroute.muzix.domain.Track;
 import com.stackroute.muzix.repository.MusicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,11 @@ public class MusicServiceImpl implements MusicService {                         
         this.musicRepository = musicRepository;                                               //autowiring music repository
     }
 
+    @Value("${exception.msg1}")
+    private String msg1;
+
+    @Value("${exception.msg2}")
+    private String msg2;
     //overring methods of MusicService Interface
     @Override
     public Track saveTrack(Track track) throws TrackAlreadyExistException {
@@ -26,7 +32,7 @@ public class MusicServiceImpl implements MusicService {                         
         Track saveTrack = new Track();
 
         if (musicRepository.existsById(track.getTrackId())) {
-            throw new TrackAlreadyExistException("Track Already Exist exception occured");
+            throw new TrackAlreadyExistException(msg2);
         }
 
         saveTrack = musicRepository.save(track);                                                //calling save method of music repository
@@ -53,7 +59,7 @@ public class MusicServiceImpl implements MusicService {                         
             return musicRepository.save(track);
         }
 
-        throw new TrackNotFoundException("Track not Found exception occured");
+        throw new TrackNotFoundException(msg1);
     }
 
     @Override
@@ -63,7 +69,7 @@ public class MusicServiceImpl implements MusicService {                         
             return musicRepository.findAll();
 
         }
-        throw new TrackNotFoundException("Track not Found exception occured");
+        throw new TrackNotFoundException(msg1);
     }
 
     //
@@ -72,7 +78,7 @@ public class MusicServiceImpl implements MusicService {                         
         if (musicRepository.equals(trackName)) {
             return musicRepository.findByName(trackName);
         } else {
-            throw new TrackNotFoundException("Track not Found exception occured");
+            throw new TrackNotFoundException(msg1);
         }
     }
 

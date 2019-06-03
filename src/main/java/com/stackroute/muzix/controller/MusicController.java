@@ -44,7 +44,7 @@ public class MusicController {
     }
 
     @ApiOperation(value = "Get All Track")
-    @GetMapping("track")
+    @GetMapping("tracks")
     // handler method to get all track
     public ResponseEntity<?> getAllTrack() {
         ResponseEntity responseEntity;
